@@ -1,37 +1,63 @@
-## Welcome to GitHub Pages
+# GNU/LINUX : Compiler un programme depuis les sources
 
-You can use the [editor on GitHub](https://github.com/Redcozmo/test-github-pages/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Rédigé à partir d'un cours sur OpenClassroom : [article](https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/42370-compiler-un-programme-depuis-les-sources "Compiler un programme depuis les sources")
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/42370-compiler-un-programme-depuis-les-sources
 
-### Markdown
+Trois solutions pour installer un programme sous LINUX :
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+1. **Dépôts offciels :** habituellement, les programmes sont disponibles dans des dépôts et installables via apt-get.
+2. **Paquetage :** quand le programme n'existe pas on peut trouver un paquetage spécifique à une distribution (.deb pour Debian, .rpm pour RedHat)
+3. **Sources :** quand le pquetage n'existe pas il faud compiler les sources 
 
-```markdown
-Syntax highlighted code block
+## 1 - A partir des dépôts
 
-# Header 1
-## Header 2
-### Header 3
+Chercher le programme : `apt list <nom-programme>`
+Si il existe installer le programme : `sudo apt install <nom-programme>`
+Si le programme a des dépendances à installer, le terminal pour invitera à les installer.
 
-- Bulleted
-- List
+## 2 - A partir d'un paquetage
 
-1. Numbered
-2. List
+Pour Debian ou Ubuntu, télécharger le fichier .deb et double-cliquer dessus.
+Apparemment cette solution ne règle pas le problème des dépendances.
 
-**Bold** and _Italic_ and `Code` text
+## 3 - A partir des sources
 
-[Link](url) and ![Image](src)
+Télécharger le fichier source qui aura une archive compressée avec l'extension `.tar.gz`
+
+Extraire l'archive : `tar zxvf htop-0.8.3.tar.gz`
+
+```
+    ./configure
+    make
+    sudo make install
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Après le `./configure` il peut y avoir des erreurs, notamment des problèmes de dépendance.
 
-### Jekyll Themes
+Il faut les régler avant de lancer le `make`et relancer ensuite le `./configure`.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Redcozmo/test-github-pages/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+# Exemples d'erreurs :
 
-### Support or Contact
+* **Extraction de l'archive : après le tar**
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+```
+tar: This does not look like a tar archive
+tar: Skipping to next header
+tar: Exiting with failure status due to previous errors
+```
+
+`gzip -dc hello-0.2.tar.gz | tar -zxf -`
+
+* **Après le `./configure`(ici pour installer **htop**)**
+
+```configure: error: You may want to use --disable-unicode or install libncursesw```
+
+Il faut chercher dans les dépôts de sa distribution, le paquet qui contient la librairie `libncursesw`.
+Par exemple, sous Ubuntu, le paquet `apt-file` permet de chercher un nom de programme dans la liste des paquets des dépôts.
+Donc dans un premier temps installer le paquet `apt-file` à partir des dépôts.
+Puis faire `apt-file search libncursesw`
+
+Et comme on souhaite compiler les sources d'un programme, il faut la version -dev de la lib.
+Dans le cas de libncursesw prendre : `libncursesw5-dev: /usr/lib/x86_64-linux-gnu/libncursesw.a`
+
