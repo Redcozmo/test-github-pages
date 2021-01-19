@@ -62,5 +62,5 @@ Et comme on souhaite compiler les sources d'un programme, il faut la version -de
 Dans le cas de libncursesw prendre : `libncursesw5-dev: /usr/lib/x86_64-linux-gnu/libncursesw.a`
 
 # Test lien vers page interne
-<a href="page1.html">Lien vers page1.html</a>
+<a href="page1.md">Lien vers page1.html</a>
 
