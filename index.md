@@ -61,3 +61,6 @@ Puis faire `apt-file search libncursesw`
 Et comme on souhaite compiler les sources d'un programme, il faut la version -dev de la lib.
 Dans le cas de libncursesw prendre : `libncursesw5-dev: /usr/lib/x86_64-linux-gnu/libncursesw.a`
 
+# Test lien vers page interne
+<a href="page1.html">Lien vers page1.html</a>
+
